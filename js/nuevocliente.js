@@ -45,6 +45,40 @@
 
        }
         
+       //Crear un nuevo objeto
+
+       const cliente = {
+           nombre,
+           email,
+           telefono,
+           empresa
+       }
+
+       cliente.id = Date.now();
+
+       crearNuevoCliente(cliente);
+    }
+
+
+    function crearNuevoCliente(cliente){
+        const transaction = DB.transaction(['crm'], 'readwrite');
+
+        const objectStore = transaction.objectStore('crm');
+
+        objectStore.add(cliente);
+
+        transaction.onerror = function() {
+            imprimiAlerta(' Hubo un error ', 'error');
+        }
+
+        transaction.oncomplete = function() {
+            
+            imprimiAlerta('El cliente se agrego correctamente');
+        }  
+        
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 3000);
     }
 
 
